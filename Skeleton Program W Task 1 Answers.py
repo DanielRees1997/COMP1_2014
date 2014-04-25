@@ -2,11 +2,12 @@
 # this code should be used in conjunction with the Preliminary Material
 # written by the AQA Programmer Team
 # developed in the Python 3.2 programming environment
-
+import pdb
 import random
 from datetime import date
 
 NO_OF_RECENT_SCORES = 3
+ACE_HIGH = False
 
 class TCard():
   def __init__(self):
@@ -81,6 +82,14 @@ def GetMenuChoice():
   Choice = input()
   print()
   return Choice.lower()[0]
+#===================================================================================
+def OptionsMain():
+  finished = False
+  while not finished:
+    DisplayOptions()
+    finished,Choice = GetOptionChoice(finished)
+    if not finished:
+      SetOptions(Choice)
 
 def DisplayOptions():
   print('OPTION MENU')
@@ -89,18 +98,32 @@ def DisplayOptions():
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
 
-def GetOptionChoice():
+def GetOptionChoice(finished):
   Choice = input()
+  if Choice == 'q':
+    finished = True
   print()
-  return Choice
+  return Choice, finished
 
-def SetOptions(OptionChoice):
-  if OptionChoice == 1:
+def SetOptions(Choice):
+  if Choice == 1:
     SetAceHighOrLow()
-  
+  else:
+    print("Option '{0}' does not exist. ".format(str(Choice)))
+    
 def SetAceHighOrLow():
-  
-
+  valid = False
+  while not valid:
+    Choice = input("Do you want Ace to be (h)igh or (l)ow? ")
+    if Choice[0].lower() == 'h':
+      ACE_HIGH = True
+      valid = True
+    elif Choice[0].lower() == 'l':
+      valid = True
+    else:
+      print("'{0}' is not a valid choice. ".format(Choice))
+    
+#===================================================================================
 def LoadDeck(Deck):
   CurrentFile = open('deck.txt', 'r')
   Count = 1
@@ -112,6 +135,7 @@ def LoadDeck(Deck):
     Deck[Count].Suit = int(LineFromFile)
     LineFromFile = CurrentFile.readline()
     Deck[Count].Rank = int(LineFromFile)
+    
     Count = Count + 1
  
 def ShuffleDeck(Deck):
@@ -256,26 +280,29 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
-if __name__ == '__main__':
-  for Count in range(1, 53):
-    Deck.append(TCard())
-  for Count in range(1, NO_OF_RECENT_SCORES + 1):
-    RecentScores.append(TRecentScore())
-  Choice = ''
-  while Choice != 'q':
-    DisplayMenu()
-    Choice = GetMenuChoice()
-    if Choice == '1':
-      LoadDeck(Deck)
-      ShuffleDeck(Deck)
-      PlayGame(Deck, RecentScores)
-    elif Choice == '2':
-      LoadDeck(Deck)
-      PlayGame(Deck, RecentScores)
-    elif Choice == '3':
-      DisplayRecentScores(RecentScores)
-    elif Choice == '5':
-      DisplayOptions()
-      GetOptionChoice()
-    else:
-      ResetRecentScores(RecentScores)
+##if __name__ == '__main__':
+##  for Count in range(1, 53):
+##    Deck.append(TCard())
+##  for Count in range(1, NO_OF_RECENT_SCORES + 1):
+##    RecentScores.append(TRecentScore())
+##  Choice = ''
+##  while Choice != 'q':
+##    DisplayMenu()
+##    Choice = GetMenuChoice()
+##    if Choice == '1':
+##      LoadDeck(Deck)
+##      ShuffleDeck(Deck)
+##      PlayGame(Deck, RecentScores)
+##    elif Choice == '2':
+##      LoadDeck(Deck)
+##      PlayGame(Deck, RecentScores)
+##    elif Choice == '3':
+##      DisplayRecentScores(RecentScores)
+##    elif Choice == '5':
+##      OptionsMain()
+##    else:
+##      ResetRecentScores(RecentScores)
+
+pdb.set_trace()
+OptionsMain()
+print(ACE_HIGH)
