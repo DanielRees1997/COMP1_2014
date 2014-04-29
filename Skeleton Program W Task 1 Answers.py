@@ -26,7 +26,9 @@ Choice = ''
 
 def GetRank(RankNo):
   Rank = ''
-  if RankNo == 1:
+  if RankNo == 1 and not ACE_HIGH:
+    Rank = 'Ace'
+  elif RankNo == 1 and ACE_HIGH:
     Rank = 'Ace'
   elif RankNo == 2:
     Rank = 'Two'
@@ -50,7 +52,7 @@ def GetRank(RankNo):
     Rank = 'Jack'
   elif RankNo == 12:
     Rank = 'Queen'
-  else:
+  elif RankNo == 13:
     Rank = 'King'
   return Rank
 
@@ -84,6 +86,7 @@ def GetMenuChoice():
   return Choice.lower()[0]
 #===================================================================================
 def OptionsMain():
+  #pdb.set_trace()
   finished = False
   while not finished:
     DisplayOptions()
@@ -95,26 +98,29 @@ def DisplayOptions():
   print('OPTION MENU')
   print()
   print('1. Set ace to HIGH or LOW ')
+  print('2. Return to main menu ')
   print()
-  print('Select an option from the menu (or enter q to quit): ', end='')
+  print('Select an option from the menu: ', end='')
 
 def GetOptionChoice(finished):
   Choice = input()
-  if Choice == 'q':
+  if Choice == '2':
     finished = True
   print()
-  return Choice, finished
+  return finished, Choice
 
 def SetOptions(Choice):
-  if Choice == 1:
+  if Choice == '1':
     SetAceHighOrLow()
   else:
     print("Option '{0}' does not exist. ".format(str(Choice)))
     
 def SetAceHighOrLow():
+  global ACE_HIGH
   valid = False
   while not valid:
     Choice = input("Do you want Ace to be (h)igh or (l)ow? ")
+    print()
     if Choice[0].lower() == 'h':
       ACE_HIGH = True
       valid = True
@@ -124,6 +130,7 @@ def SetAceHighOrLow():
       print("'{0}' is not a valid choice. ".format(Choice))
     
 #===================================================================================
+      
 def LoadDeck(Deck):
   CurrentFile = open('deck.txt', 'r')
   Count = 1
@@ -135,7 +142,6 @@ def LoadDeck(Deck):
     Deck[Count].Suit = int(LineFromFile)
     LineFromFile = CurrentFile.readline()
     Deck[Count].Rank = int(LineFromFile)
-    
     Count = Count + 1
  
 def ShuffleDeck(Deck):
@@ -166,10 +172,13 @@ def GetCard(ThisCard, Deck, NoOfCardsTurnedOver):
   Deck[52 - NoOfCardsTurnedOver].Rank = 0
 
 def IsNextCardHigher(LastCard, NextCard):
-  Higher = False
-  if NextCard.Rank > LastCard.Rank:
-    Higher = True
-  return Higher
+    pdb.set_trace()
+    Higher = False
+    if NextCard.Rank > LastCard.Rank:
+      Higher = True
+    if ACE_HIGH and Higher:
+      Higher = False
+    return Higher
 
 def GetPlayerName():
   print()
@@ -253,6 +262,7 @@ def UpdateRecentScores(RecentScores, Score):
     RecentScores[Count].Date = date.today()
 
 def PlayGame(Deck, RecentScores):
+  pdb.set_trace()
   LastCard = TCard()
   NextCard = TCard()
   GameOver = False
@@ -280,29 +290,27 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
-##if __name__ == '__main__':
-##  for Count in range(1, 53):
-##    Deck.append(TCard())
-##  for Count in range(1, NO_OF_RECENT_SCORES + 1):
-##    RecentScores.append(TRecentScore())
-##  Choice = ''
-##  while Choice != 'q':
-##    DisplayMenu()
-##    Choice = GetMenuChoice()
-##    if Choice == '1':
-##      LoadDeck(Deck)
-##      ShuffleDeck(Deck)
-##      PlayGame(Deck, RecentScores)
-##    elif Choice == '2':
-##      LoadDeck(Deck)
-##      PlayGame(Deck, RecentScores)
-##    elif Choice == '3':
-##      DisplayRecentScores(RecentScores)
-##    elif Choice == '5':
-##      OptionsMain()
-##    else:
-##      ResetRecentScores(RecentScores)
+if __name__ == '__main__':
+  for Count in range(1, 53):
+    Deck.append(TCard())
+  for Count in range(1, NO_OF_RECENT_SCORES + 1):
+    RecentScores.append(TRecentScore())
+  pdb.set_trace()
+  Choice = ''
+  while Choice != 'q':
+    DisplayMenu()
+    Choice = GetMenuChoice()
+    if Choice == '1':
+      LoadDeck(Deck)
+      ShuffleDeck(Deck)
+      PlayGame(Deck, RecentScores)
+    elif Choice == '2':
+      LoadDeck(Deck)
+      PlayGame(Deck, RecentScores)
+    elif Choice == '3':
+      DisplayRecentScores(RecentScores)
+    elif Choice == '5':
+      OptionsMain()
+    else:
+      ResetRecentScores(RecentScores)
 
-pdb.set_trace()
-OptionsMain()
-print(ACE_HIGH)
