@@ -172,7 +172,7 @@ def GetCard(ThisCard, Deck, NoOfCardsTurnedOver):
   Deck[52 - NoOfCardsTurnedOver].Rank = 0
 
 def IsNextCardHigher(LastCard, NextCard):
-    pdb.set_trace()
+    #pdb.set_trace()
     Higher = False
     if NextCard.Rank > LastCard.Rank:
       Higher = True
@@ -262,7 +262,7 @@ def UpdateRecentScores(RecentScores, Score):
     RecentScores[Count].Date = date.today()
 
 def PlayGame(Deck, RecentScores):
-  pdb.set_trace()
+  #pdb.set_trace()
   LastCard = TCard()
   NextCard = TCard()
   GameOver = False
@@ -295,7 +295,7 @@ if __name__ == '__main__':
     Deck.append(TCard())
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores.append(TRecentScore())
-  pdb.set_trace()
+  #pdb.set_trace()
   Choice = ''
   while Choice != 'q':
     DisplayMenu()
