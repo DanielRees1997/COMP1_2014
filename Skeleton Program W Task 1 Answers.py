@@ -216,7 +216,30 @@ def ResetRecentScores(RecentScores):
     RecentScores[Count].Score = 0
     RecentScores[Count].Date = None
 
+#======================Task 7======================================================
+def GetTestScores(RecentScores):
+  for Count in range(1, NO_OF_RECENT_SCORES + 1):
+    RecentScores[Count].Name = ('Test_{0}'.format(str(Count)))
+    RecentScores[Count].Score = random.randint(1,20)
+    RecentScores[Count].Date = datetime.date.today()
+
+  return RecentScores
+
+def BubbleSortRecentScores(RecentScores):
+  swapped = True
+  count = 1
+  while swapped:
+    swapped = False
+    if RecentScores[count].Score < RecentScores[count +1].Score:
+      swapped = True
+      Temp = RecentScores[count]
+      RecentScores[count] = RecentScores[count +1]
+      RecentScores[count +1] = Temp
+    count = count + 1
+#==================================================================================
 def DisplayRecentScores(RecentScores):
+  RecentScores = GetTestScores(RecentScores)
+  RecentScores = BubbleSortRecentScores(RecentScores)
   print()
   print('Recent Scores: ')
   print()
@@ -290,27 +313,28 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
-if __name__ == '__main__':
-  for Count in range(1, 53):
-    Deck.append(TCard())
-  for Count in range(1, NO_OF_RECENT_SCORES + 1):
-    RecentScores.append(TRecentScore())
-  #pdb.set_trace()
-  Choice = ''
-  while Choice != 'q':
-    DisplayMenu()
-    Choice = GetMenuChoice()
-    if Choice == '1':
-      LoadDeck(Deck)
-      ShuffleDeck(Deck)
-      PlayGame(Deck, RecentScores)
-    elif Choice == '2':
-      LoadDeck(Deck)
-      PlayGame(Deck, RecentScores)
-    elif Choice == '3':
-      DisplayRecentScores(RecentScores)
-    elif Choice == '5':
-      OptionsMain()
-    else:
-      ResetRecentScores(RecentScores)
+##if __name__ == '__main__':
+##  for Count in range(1, 53):
+##    Deck.append(TCard())
+##  for Count in range(1, NO_OF_RECENT_SCORES + 1):
+##    RecentScores.append(TRecentScore())
+##  #pdb.set_trace()
+##  Choice = ''
+##  while Choice != 'q':
+##    DisplayMenu()
+##    Choice = GetMenuChoice()
+##    if Choice == '1':
+##      LoadDeck(Deck)
+##      ShuffleDeck(Deck)
+##      PlayGame(Deck, RecentScores)
+##    elif Choice == '2':
+##      LoadDeck(Deck)
+##      PlayGame(Deck, RecentScores)
+##    elif Choice == '3':
+##      DisplayRecentScores(RecentScores)
+##    elif Choice == '5':
+##      OptionsMain()
+##    else:
+##      ResetRecentScores(RecentScores)
 
+DisplayRecentScores(RecentScores)
