@@ -77,6 +77,7 @@ def DisplayMenu():
   print('3. Display recent scores')
   print('4. Reset recent scores')
   print('5. Options')
+  print('6. Save high scores')
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
   
@@ -220,7 +221,7 @@ def ResetRecentScores(RecentScores):
 def GetTestScores(RecentScores):
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores[Count].Name = ('Test_{0}'.format(str(Count)))
-    RecentScores[Count].Score = random.randint(1,20)
+    RecentScores[Count].Score = random.randint(1,30)
     RecentScores[Count].Date = date.today()
 
 
@@ -239,7 +240,7 @@ def BubbleSortRecentScores(RecentScores):
 def DisplayRecentScores(RecentScores):
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores.append(TRecentScore())
-  GetTestScores(RecentScores)
+  #GetTestScores(RecentScores)
   BubbleSortRecentScores(RecentScores)
   print()
   print('Recent Scores: ')
@@ -284,7 +285,13 @@ def UpdateRecentScores(RecentScores, Score):
     RecentScores[Count].Name = PlayerName
     RecentScores[Count].Score = Score
     RecentScores[Count].Date = date.today()
+#====================================TASK 8========================================
 
+def SaveScores(RecentScores):
+  with open('Save_Scores.txt', mode = 'w',encoding = 'utf-8') as my_file:
+    for Count in range(1, NO_OF_RECENT_SCORES):
+      my_file.write(RecentScores[Count])
+#==================================================================================
 def PlayGame(Deck, RecentScores):
   #pdb.set_trace()
   LastCard = TCard()
@@ -314,28 +321,30 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
-##if __name__ == '__main__':
-##  for Count in range(1, 53):
-##    Deck.append(TCard())
+if __name__ == '__main__':
+  for Count in range(1, 53):
+    Deck.append(TCard())
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores.append(TRecentScore())
-##  #pdb.set_trace()
-##  Choice = ''
-##  while Choice != 'q':
-##    DisplayMenu()
-##    Choice = GetMenuChoice()
-##    if Choice == '1':
-##      LoadDeck(Deck)
-##      ShuffleDeck(Deck)
-##      PlayGame(Deck, RecentScores)
-##    elif Choice == '2':
-##      LoadDeck(Deck)
-##      PlayGame(Deck, RecentScores)
-##    elif Choice == '3':
-##      DisplayRecentScores(RecentScores)
-##    elif Choice == '5':
-##      OptionsMain()
-##    else:
-##      ResetRecentScores(RecentScores)
+  #pdb.set_trace()
+  Choice = ''
+  while Choice != 'q':
+    DisplayMenu()
+    Choice = GetMenuChoice()
+    if Choice == '1':
+      LoadDeck(Deck)
+      ShuffleDeck(Deck)
+      PlayGame(Deck, RecentScores)
+    elif Choice == '2':
+      LoadDeck(Deck)
+      PlayGame(Deck, RecentScores)
+    elif Choice == '3':
+      DisplayRecentScores(RecentScores)
+    elif Choice == '5':
+      OptionsMain()
+    elif Choice == '6':
+      SaveScores(RecentScores)
+    else:
+      ResetRecentScores(RecentScores)
 
-DisplayRecentScores(RecentScores)
+
