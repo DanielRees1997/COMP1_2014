@@ -225,6 +225,7 @@ def GetTestScores(RecentScores):
     RecentScores[Count].Date = date.today()
 
 
+
 def BubbleSortRecentScores(RecentScores):
   swapped = True
   while swapped:
@@ -289,8 +290,11 @@ def UpdateRecentScores(RecentScores, Score):
 
 def SaveScores(RecentScores):
   with open('Save_Scores.txt', mode = 'w',encoding = 'utf-8') as my_file:
-    for Count in range(1, NO_OF_RECENT_SCORES):
-      my_file.write(RecentScores[Count])
+    for Count in range(1, NO_OF_RECENT_SCORES+1):
+      LineToSave = ('{0} {1}\n'.format(RecentScores[Count].Name,RecentScores[Count].Score))
+      my_file.write(LineToSave)
+      
+      
 #==================================================================================
 def PlayGame(Deck, RecentScores):
   #pdb.set_trace()
@@ -346,5 +350,4 @@ if __name__ == '__main__':
       SaveScores(RecentScores)
     else:
       ResetRecentScores(RecentScores)
-
 
