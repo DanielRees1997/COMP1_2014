@@ -78,6 +78,7 @@ def DisplayMenu():
   print('4. Reset recent scores')
   print('5. Options')
   print('6. Save high scores')
+  print('7. Load high scores')
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
   
@@ -291,9 +292,17 @@ def UpdateRecentScores(RecentScores, Score):
 def SaveScores(RecentScores):
   with open('Save_Scores.txt', mode = 'w',encoding = 'utf-8') as my_file:
     for Count in range(1, NO_OF_RECENT_SCORES+1):
-      LineToSave = ('{0} {1}\n'.format(RecentScores[Count].Name,RecentScores[Count].Score))
+      LineToSave = ('{0} {1} {2}\n'.format(RecentScores[Count].Name,RecentScores[Count].Score,RecentScores[Count].Date))
       my_file.write(LineToSave)
+  print("High Scores saved to file 'Save_Scores.txt'")
       
+#====================================TASK 9========================================
+
+def LoadScores(RecentScores):
+  with open('Save_Scores.txt', mode = 'r',encoding = 'utf-8') as my_file:
+    for Count in range(1, NO_OF_RECENT_SCORES+1):
+      line = my_file.read()
+      line = line.rstrip("\n")
       
 #==================================================================================
 def PlayGame(Deck, RecentScores):
@@ -348,6 +357,8 @@ if __name__ == '__main__':
       OptionsMain()
     elif Choice == '6':
       SaveScores(RecentScores)
+    elif Choice == '7':
+      LoadScores(RecentScores)
     else:
       ResetRecentScores(RecentScores)
 
